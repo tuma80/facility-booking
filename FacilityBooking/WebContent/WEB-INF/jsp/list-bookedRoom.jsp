@@ -15,11 +15,26 @@
 <jsp:include page="css_include.jsp"></jsp:include>
 </head>
 <body>
+<script>
+function reloadPage(){
+	var form = document.forms[0];
+	form.method="POST";
+	form.action="list-bookedRoom.do?id="+form.roomId.value+"&selDate="+form.selDate.value;
+	form.submit();
+}
+function undoBooking(bookingId){
+	var form = document.forms[0];
+	form.method="POST";
+	form.action= "undo-bookedRoom.do?id="+bookingId+"&roomId="+form.roomId.value+"&selDate="+form.selDate.value;
+	form.submit();	
+}
+</script>
 <div id="content">
 <form:form modelAttribute="bookedRoomForm" action="book-room.do">
 <jsp:include page="menu.jsp"></jsp:include>
 		<div id="add">${bookedRoomForm.roomName}</div>
 		<form:hidden path="roomId" />
+		<form:select path="selDate" items="${bookedRoomForm.dateAvails}" onchange="reloadPage()"/>
      	 <display:table name="bookedRoomList" requestURI="/list-bookedRoom.do" 
       				id="bookedRoom" uid="bookedRoom"  excludedParams="*"    
       				class="displaytag" cellpadding="0" style="width:800px" pagesize="20">
@@ -36,6 +51,11 @@
 				</c:choose>
 				</display:column>           		
            		<display:column title="Booked By" property="userName" />
+           		<display:column>
+           		<c:if test="${bookedRoom.owner == true}">
+           			<input type="button" value="Undo" onclick="undoBooking(${bookedRoom.bookingId})">
+           		</c:if>
+           		</display:column>
            </display:table>
            <input type="submit" value="Book" />
 </div>

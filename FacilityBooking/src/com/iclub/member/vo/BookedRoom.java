@@ -6,6 +6,8 @@ public class BookedRoom {
 
 	long trId;
 	
+	long bookingId;
+	
 	String fromTime;
 	
 	String toTime;
@@ -18,6 +20,25 @@ public class BookedRoom {
 	
 	boolean booked;
 	
+	boolean owner;
+	
+	
+	public boolean isOwner() {
+		return owner;
+	}
+
+	public void setOwner(boolean owner) {
+		this.owner = owner;
+	}
+
+	public long getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(long bookingId) {
+		this.bookingId = bookingId;
+	}
+
 	public boolean isBooked() {
 		return (userName!=null)? true:false ;
 	}

@@ -12,6 +12,7 @@
 <body>
 <jsp:include page="menu.jsp"></jsp:include>
 <div id="content">
+<div id="error">${error}</div>
 <form:form modelAttribute="room" action="edit-room.do" method="POST">
 <table width="67%" border="0" align="left">
   <tr>

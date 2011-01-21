@@ -8,5 +8,6 @@ public interface GenericDao<T,PK extends Serializable> {
     T read(PK id,Class<T> c);
     T update(T t);
     void delete(T t);
-    public List<T> getAll(Class<T> c);
+    List<T> getAll(Class<T> c);
+    List<T> getByFilter(T filter);
 }
