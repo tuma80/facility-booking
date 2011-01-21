@@ -32,9 +32,12 @@ function undoBooking(bookingId){
 <div id="content">
 <form:form modelAttribute="bookedRoomForm" action="book-room.do">
 <jsp:include page="menu.jsp"></jsp:include>
-		<div id="add">${bookedRoomForm.roomName}</div>
+		
 		<form:hidden path="roomId" />
-		<form:select path="selDate" items="${bookedRoomForm.dateAvails}" onchange="reloadPage()"/>
+		<table align="left" style="position:relative">
+		<tr><td>${bookedRoomForm.roomName}</td></tr>
+		<tr><td><form:select path="selDate" items="${bookedRoomForm.dateAvails}" onchange="reloadPage()"/></td></tr>
+		</table>
      	 <display:table name="bookedRoomList" requestURI="/list-bookedRoom.do" 
       				id="bookedRoom" uid="bookedRoom"  excludedParams="*"    
       				class="displaytag" cellpadding="0" style="width:800px" pagesize="20">
