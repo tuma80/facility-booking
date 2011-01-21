@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.iclub.common.UserException;
 import com.iclub.member.vo.Room;
 import com.iclub.service.RoomService;
 
@@ -54,7 +55,7 @@ public class RoomController {
 	}	
 	
 	@RequestMapping(value="/edit-room.do",method=RequestMethod.GET)
-	public ModelAndView showeditRoom(@RequestParam("id") long id){
+	public ModelAndView showeditRoom(@RequestParam("id") long id,HttpServletRequest request){
 		ModelAndView mv = new ModelAndView("edit-room");
 		Room form = roomService.getRoom(id);
 		mv.addObject("room",form);
@@ -64,15 +65,19 @@ public class RoomController {
 	@RequestMapping(value="/edit-room.do",method=RequestMethod.POST)
 	public ModelAndView editRoom(@ModelAttribute("room")Room form,BindingResult bindingResult, HttpServletRequest request, ModelMap model) throws Exception{
 		if(bindingResult.hasErrors()){
-			return showeditRoom(form.getRoomId());
+			return showeditRoom(form.getRoomId(),request);
 		}
 		roomService.update(form);
 		return listRoom();	
 	}		
 	
 	@RequestMapping(value="/delete-room.do",method=RequestMethod.POST)
-	public ModelAndView deleteRoom(@RequestParam("roomId") long id) throws Exception{
-		roomService.delete(id);
+	public ModelAndView deleteRoom(@RequestParam("roomId") long id,HttpServletRequest request) throws Exception{
+		try{
+			roomService.delete(id);
+		}catch (UserException e) {
+			return showeditRoom(id, request).addObject("error",e.getMessage());
+		}
 		return listRoom();
 	}
 	

@@ -6,6 +6,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.Session;
+import org.hibernate.criterion.Example;
+import org.hibernate.ejb.HibernateEntityManager;
 import org.springframework.stereotype.Repository;
 
 import com.iclub.dao.GenericDao;
@@ -39,6 +42,11 @@ public class GenericDaoImpl<T,PK extends Serializable> implements GenericDao<T, 
 	
 	public List<T> getAll(Class<T> c){
 		return this.entityManager.createQuery("SELECT o FROM "+ c.getName() +" o").getResultList();
+	}
+	
+	public List<T> getByFilter(T filter){
+		Session session = ((HibernateEntityManager)entityManager.unwrap(HibernateEntityManager.class)).getSession();
+		return session.createCriteria(filter.getClass()).add(Example.create(filter)).list();
 	}
 
 }
